@@ -45,7 +45,7 @@ function displayTime() {
 
 async function fetchBibleVerse() {
   try {
-    const response = await fetch("https://cors-anywhere.herokuapp.com/https://bible-api.com/?random=verse&translation=almeida");
+    const response = await fetch("https://bible-api.com/john%203:16");
     const data = await response.json();
     console.log(data);
     
