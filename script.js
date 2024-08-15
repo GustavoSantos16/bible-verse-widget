@@ -43,22 +43,22 @@ function displayTime() {
   document.getElementById("seconds").innerHTML = sec;
 }
 
-async function fetchBibleVerse() {
-  try {
-    const response = await fetch("https://bible-api.com/john%203:16");
-    const data = await response.json();
-    console.log(data);
+// async function fetchBibleVerse() {
+//   try {
+//     const response = await fetch("https://bible-api.com/?random=verse&translation=almeida");
+//     const data = await response.json();
+//     console.log(data);
     
-    const verseText = `${data.reference}: ${data.text}`;
-    document.getElementById("verse").innerHTML = verseText;
-  } catch (error) {
-    document.getElementById("verse").innerHTML = "Failed to load verse.";
-    console.error("Error fetching the verse:", error);
-  }
-}
+//     const verseText = `${data.reference}: ${data.text}`;
+//     document.getElementById("verse").innerHTML = verseText;
+//   } catch (error) {
+//     document.getElementById("verse").innerHTML = "Failed to load verse.";
+//     console.error("Error fetching the verse:", error);
+//   }
+// }
 
 setInterval(() => {
   displayTime();
 }, 10);
 
-fetchBibleVerse();
+// fetchBibleVerse();

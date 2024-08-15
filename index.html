@@ -11,6 +11,34 @@
         <div class="clock-container">
             <h2 id="day">Day</h2>
             <h3 id="verse">Loading verse...</h3>
+            <script>
+                function getRandomVerse(xml) {
+                    // Seleciona todos os elementos <v> que representam versículos
+                    const verses = xml.getElementsByTagName("v");
+            
+                    // Seleciona um versículo aleatório
+                    const randomIndex = Math.floor(Math.random() * verses.length);
+                    const randomVerse = verses[randomIndex].nextSibling.data;
+        
+                    return randomVerse;
+                }
+        
+                fetch('https://raw.githubusercontent.com/seven1m/open-bibles/master/por-almeida.usfx.xml')
+                    .then(response => response.text())
+                    .then(data => {
+                        const parser = new DOMParser();
+                        const xmlDoc = parser.parseFromString(data, "text/xml");
+                        
+        
+                        const verse = getRandomVerse(xmlDoc);
+                        
+                        document.getElementById("verse").textContent = verse;
+                    })
+                    .catch(error => {
+                        document.getElementById("verse").textContent = "Erro ao carregar o versículo.";
+                        console.error("Erro ao carregar o XML:", error);
+                    });
+            </script>
             <div>
                 <span id="hours">00</span>
                 <span>:</span>
