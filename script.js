@@ -1,7 +1,7 @@
  // Função para buscar e processar o XML
  async function fetchAndProcessXML() {
     try {
-        const response = await fetch('https://raw.githubusercontent.com/seven1m/open-bibles/master/por-almeida.usfx.xml');
+        const response = await fetch('https://bible-verse-widget.netlify.app/bible.xml');
         const xmlText = await response.text();
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
@@ -13,7 +13,6 @@
         const randomBook = books[Math.floor(Math.random() * books.length)];
         const bookId = randomBook.getAttribute('id');
         const bookName = randomBook.getElementsByTagName('h')
-        console.log(bookName);
         
         
         // Extrair capítulos
