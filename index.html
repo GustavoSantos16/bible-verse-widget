@@ -1,55 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Clock</title>
+    <title>Random Bible Verse</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="clock">
-        <div class="clock-container">
-            <h2 id="day">Day</h2>
-            <h3 id="verse">Loading verse...</h3>
-            <script>
-                function getRandomVerse(xml) {
-                    // Seleciona todos os elementos <v> que representam versículos
-                    const verses = xml.getElementsByTagName("v");
-            
-                    // Seleciona um versículo aleatório
-                    const randomIndex = Math.floor(Math.random() * verses.length);
-                    const randomVerse = verses[randomIndex].nextSibling.data;
-        
-                    return randomVerse;
-                }
-        
-                fetch('https://raw.githubusercontent.com/seven1m/open-bibles/master/por-almeida.usfx.xml')
-                    .then(response => response.text())
-                    .then(data => {
-                        const parser = new DOMParser();
-                        const xmlDoc = parser.parseFromString(data, "text/xml");
-
-                        console.log(xmlDoc);
-                        //todo TRAZER o capitulo e versiculo
-                        
-                        
-                        const verse = getRandomVerse(xmlDoc);
-                        
-                        document.getElementById("verse").textContent = verse;
-                    })
-                    .catch(error => {
-                        document.getElementById("verse").textContent = "Erro ao carregar o versículo.";
-                        console.error("Erro ao carregar o XML:", error);
-                    });
-            </script>
-            <div>
-                <span id="hours">00</span>
-                <span>:</span>
-                <span id="minutes">00</span>
-                <span>:</span>
-                <span id="seconds">00</span>
-                <span id="session">AM</span>
-            </div>
+    <div class="box">
+        <div class="box-container">
+            <h2 id="book-chapter"></h2>
+            <h3 id="verse"></h3>
         </div>
     </div>
 

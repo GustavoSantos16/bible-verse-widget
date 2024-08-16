@@ -1,64 +1,60 @@
-function displayTime() {
-  let dateTime = new Date();
-  let hrs = dateTime.getHours();
-  let min = dateTime.getMinutes();
-  let sec = dateTime.getSeconds();
-  let session = document.getElementById("session");
-
-  const daysOfWeek = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-
-  const currentDayOfWeek = daysOfWeek[dateTime.getDay()];
-
-  if (hrs >= 12) {
-    session.innerHTML = "PM";
-  } else {
-    session.innerHTML = "AM";
+ // Função para buscar e processar o XML
+ async function fetchAndProcessXML() {
+    try {
+        const response = await fetch('https://raw.githubusercontent.com/seven1m/open-bibles/master/por-almeida.usfx.xml');
+        const xmlText = await response.text();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
+  
+        // Extrair livros
+        const books = Array.from(xmlDoc.getElementsByTagName('book'));
+  
+        // Escolher um livro aleatório
+        const randomBook = books[Math.floor(Math.random() * books.length)];
+        const bookId = randomBook.getAttribute('id');
+        const bookName = randomBook.getElementsByTagName('h')
+        console.log(bookName);
+        
+        
+        // Extrair capítulos
+        const chapters = Array.from(randomBook.getElementsByTagName('c'));
+        
+        if (chapters.length > 0) {
+            // Escolher um capítulo aleatório
+            const randomChapter = chapters[Math.floor(Math.random() * chapters.length)];
+            const chapterId = randomChapter.getAttribute('id');
+            
+            // Encontrar versículos associados ao capítulo
+            let verses = [];
+            let sibling = randomChapter.nextElementSibling;
+            while (sibling && sibling.tagName !== 'c') {
+                if (sibling.tagName === 'v') {
+                    verses.push(sibling);
+                }
+                sibling = sibling.nextElementSibling;
+            }
+            console.log(sibling)
+            
+            if (verses.length > 0) {
+                // Escolher um versículo aleatório
+                const randomVerse = verses[Math.floor(Math.random() * verses.length)];
+                const verseId = randomVerse.getAttribute('id');
+                const verseText = randomVerse.nextSibling.data;
+  
+                // Atualizar o HTML com o livro, capítulo e versículo aleatório
+                document.getElementById('book-chapter').innerText = `${bookName[0].innerHTML} ${chapterId} : ${verseId}`;
+                document.getElementById('verse').innerText = verseText;
+            } else {
+                document.getElementById('verse').innerText = 'Nenhum versículo encontrado.';
+            }
+        } else {
+            document.getElementById('verse').innerText = 'Nenhum capítulo encontrado.';
+        }
+    } catch (error) {
+        console.error('Erro ao buscar ou processar o XML:', error);
+        document.getElementById('verse').innerText = 'Erro ao carregar o versículo.';
+    }
   }
-
-  if (hrs > 12) {
-    hrs = hrs - 12;
-  }
-
-  if (hrs < 10) {
-    hrs = "0" + hrs;
-  }
-  if (min < 10) {
-    min = "0" + min;
-  }
-  if (sec < 10) {
-    sec = "0" + sec;
-  }
-
-  document.getElementById("day").innerHTML = currentDayOfWeek;
-  document.getElementById("hours").innerHTML = hrs;
-  document.getElementById("minutes").innerHTML = min;
-  document.getElementById("seconds").innerHTML = sec;
-}
-
-// async function fetchBibleVerse() {
-//   try {
-//     const response = await fetch("https://bible-api.com/?random=verse&translation=almeida");
-//     const data = await response.json();
-//     console.log(data);
-    
-//     const verseText = `${data.reference}: ${data.text}`;
-//     document.getElementById("verse").innerHTML = verseText;
-//   } catch (error) {
-//     document.getElementById("verse").innerHTML = "Failed to load verse.";
-//     console.error("Error fetching the verse:", error);
-//   }
-// }
-
-setInterval(() => {
-  displayTime();
-}, 10);
-
-// fetchBibleVerse();
+  
+  // Chamar a função ao carregar a página
+  fetchAndProcessXML();
